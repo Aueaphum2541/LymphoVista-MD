@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LymphoVista MD | Functional Surveillance</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="brand-lockup">
+          <div class="brand-orbit" aria-hidden="true"><span></span></div>
+          <div>
+            <strong>LymphoVista MD</strong>
+            <small>Cervical Bioimpedance<br>Surveillance</small>
+          </div>
+        </div>
+
+        <nav class="nav-stack">
+          <button class="nav-item is-active" data-jump="overview" type="button">
+            <span class="nav-icon nav-chart" aria-hidden="true"></span>
+            Overview
+          </button>
+          <button class="nav-item" data-jump="bioimpedance" type="button">
+            <span class="nav-icon nav-loop" aria-hidden="true"></span>
+            Bioimpedance
+          </button>
+          <button class="nav-item" data-jump="registration" type="button">
+            <span class="nav-icon nav-id" aria-hidden="true"></span>
+            Register
+          </button>
+          <button class="nav-item" data-jump="serial" type="button">
+            <span class="nav-icon nav-usb" aria-hidden="true"></span>
+            Serial Link
+          </button>
+          <button class="nav-item" data-jump="trends" type="button">
+            <span class="nav-icon nav-trend" aria-hidden="true"></span>
+            Trends
+          </button>
+          <button class="nav-item" data-jump="cohort" type="button">
+            <span class="nav-icon nav-cohort" aria-hidden="true"></span>
+            Cohort
+          </button>
+          <button class="nav-item" data-jump="care" type="button">
+            <span class="nav-icon nav-clipboard" aria-hidden="true"></span>
+            Care Plan
+          </button>
+        </nav>
+
+        <section class="device-status" aria-label="Device status">
+          <h2>Device Status</h2>
+          <div class="status-row"><span class="dot idle" id="serialStatusDot"></span><span id="serialStatusText">Serial offline</span></div>
+          <div class="status-row"><span class="battery-icon"></span>Battery: <strong id="batteryValue">92%</strong></div>
+          <div class="status-row"><span class="signal-icon"></span>Signal: <strong id="signalValue">Excellent</strong></div>
+        </section>
+
+        <div class="user-card">
+          <div class="avatar">AS</div>
+          <div>
+            <strong>Dr. A. Smith</strong>
+            <small>Oncology</small>
+          </div>
+          <button class="user-menu" type="button" aria-label="Open account menu"></button>
+        </div>
+      </aside>
+
+      <main class="dashboard" id="overview">
+        <header class="micro-header">
+          <div></div>
+          <div class="mode-status">
+            <span class="live-dot"></span>
+            Functional Surveillance (Not Imaging)
+            <button class="shield-button" type="button" aria-label="Data protection status"></button>
+          </div>
+        </header>
+
+        <section class="kpi-grid" aria-label="Risk summary">
+          <article class="kpi-card kpi-risk">
+            <span class="label">Risk Index</span>
+            <strong id="riskIndex">96</strong>
+            <small id="riskLabel">High risk</small>
+            <span class="card-icon warn-icon" aria-hidden="true"></span>
+          </article>
+          <article class="kpi-card">
+            <span class="label">Dominant Pattern</span>
+            <strong id="dominantPattern">Progressive left-side deviation</strong>
+            <small id="patternNote">Sustained deviation with increasing asymmetry over last 3 sessions</small>
+            <span class="card-icon trend-icon" aria-hidden="true"></span>
+          </article>
+          <article class="kpi-card">
+            <span class="label">Clinical Action</span>
+            <strong id="clinicalAction">Escalate review</strong>
+            <small id="actionNote">Same-day clinical review recommended</small>
+            <span class="card-icon action-icon" aria-hidden="true"></span>
+          </article>
+          <article class="kpi-card">
+            <span class="label">Data Confidence</span>
+            <strong id="confidenceValue">82%</strong>
+            <small id="confidenceNote">Stable repeated baseline</small>
+            <span class="card-icon shield-icon" aria-hidden="true"></span>
+          </article>
+        </section>
+
+        <section class="main-grid">
+          <article class="panel patient-panel">
+            <div class="panel-title">
+              <h2>Patient & Session</h2>
+            </div>
+            <div class="patient-layout">
+              <div class="patient-photo" aria-label="Cervical patch position">
+                <div class="face-crop"></div>
+                <div class="neck-column"></div>
+                <div class="shoulder-line"></div>
+                <div class="patch patch-r">R</div>
+                <div class="patch patch-l">L</div>
+              </div>
+              <dl class="session-table" id="sessionTable"></dl>
+            </div>
+          </article>
+
+          <article class="panel interpretation-panel">
+            <div class="panel-title live-title">
+              <h2>Physician Interpretation</h2>
+              <span><i></i>Live</span>
+            </div>
+            <p id="thaiNarrative">
+              ผลการเฝ้าระวังด้วย bio-impedance พบแนวโน้มการเปลี่ยนแปลงด้านซ้ายต่อเนื่องหลายครั้ง สอดคล้องกับประวัติการผ่าตัดต่อมน้ำเหลืองและการฉายรังสี แนะนำให้ประเมินอาการร่วมและพิจารณา ultrasound correlation ในวันเดียวกัน
+            </p>
+            <div class="finding-box">
+              <h3>Key Findings</h3>
+              <div class="finding-list" id="findingList"></div>
+            </div>
+            <div class="assessment-copy">
+              <strong>Assessment</strong>
+              <p id="assessmentText">Findings are concerning for functional lymphatic abnormality on the left side. Correlate with clinical examination and patient symptoms.</p>
+            </div>
+          </article>
+
+          <article class="panel trends-panel" id="trends">
+            <div class="panel-title with-select">
+              <h2>Longitudinal Bioimpedance Trends</h2>
+              <label>
+                <select id="sessionRange">
+                  <option value="6">Last 6 Sessions</option>
+                  <option value="10">Last 10 Sessions</option>
+                </select>
+              </label>
+            </div>
+            <div class="mini-chart-grid">
+              <div class="chart-card">
+                <h3>Left vs Right Impedance (500 kHz)</h3>
+                <small>Ohm (magnitude)</small>
+                <canvas id="impedanceChart" width="360" height="190"></canvas>
+              </div>
+              <div class="chart-card">
+                <h3>Asymmetry Index</h3>
+                <small>%</small>
+                <canvas id="asymmetryChart" width="360" height="190"></canvas>
+              </div>
+              <div class="chart-card">
+                <h3>Bioimpedance Spectrum (Left vs Right)</h3>
+                <small>Impedance (ohm)</small>
+                <canvas id="spectrumChart" width="360" height="190"></canvas>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel quality-panel" id="bioimpedance">
+            <div class="panel-title">
+              <h2>Acquisition & Quality</h2>
+            </div>
+            <div class="quality-grid" id="qualityGrid"></div>
+          </article>
+
+          <article class="panel system-panel">
+            <div class="panel-title">
+              <h2>Patch System Overview</h2>
+            </div>
+            <div class="system-layout">
+              <div class="patch-kit" aria-label="Patch and module kit">
+                <span class="round-patch"></span>
+                <span class="round-patch small"></span>
+                <span class="module-block"><i></i></span>
+              </div>
+              <div class="system-specs">
+                <div><span class="spec-icon sensor"></span><strong>Sensor Type</strong><small>Tetrapolar bioimpedance patch</small></div>
+                <div><span class="spec-icon acquisition"></span><strong>Acquisition</strong><small>External bioimpedance module</small></div>
+                <div><span class="spec-icon excitation"></span><strong>Excitation</strong><small>AC current (multifrequency)</small></div>
+                <div><span class="spec-icon placement"></span><strong>Placement</strong><small>Bilateral lateral neck</small></div>
+              </div>
+              <div class="mini-neck">
+                <span>R</span>
+                <span>L</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel registration-panel" id="registration">
+            <div class="panel-title registration-title">
+              <h2>Patient / Device Registration</h2>
+              <span id="registrationBadge">Not registered</span>
+            </div>
+            <form class="registration-form" id="registrationForm">
+              <label>
+                <span>Patient ID</span>
+                <input id="regPatientId" name="patientId" type="text" autocomplete="off" required>
+              </label>
+              <label>
+                <span>Patient name</span>
+                <input id="regPatientName" name="patientName" type="text" autocomplete="off" required>
+              </label>
+              <label>
+                <span>Age</span>
+                <input id="regAge" name="age" type="number" min="1" max="120" required>
+              </label>
+              <label>
+                <span>Sex</span>
+                <select id="regSex" name="sex">
+                  <option>Female</option>
+                  <option>Male</option>
+                  <option>Other</option>
+                </select>
+              </label>
+              <label class="wide-field">
+                <span>Clinical history</span>
+                <input id="regHistory" name="clinicalHistory" type="text" autocomplete="off">
+              </label>
+              <label class="wide-field">
+                <span>Treatment</span>
+                <input id="regTreatment" name="treatment" type="text" autocomplete="off">
+              </label>
+              <label>
+                <span>Device ID</span>
+                <input id="regDeviceId" name="deviceId" type="text" autocomplete="off">
+              </label>
+              <label>
+                <span>Baseline L</span>
+                <input id="regBaselineLeft" name="baselineLeft" type="number" step="0.1" required>
+              </label>
+              <label>
+                <span>Baseline R</span>
+                <input id="regBaselineRight" name="baselineRight" type="number" step="0.1" required>
+              </label>
+              <label>
+                <span>Phase L base</span>
+                <input id="regPhaseLeft" name="phaseLeft" type="number" step="0.01">
+              </label>
+              <label>
+                <span>Phase R base</span>
+                <input id="regPhaseRight" name="phaseRight" type="number" step="0.01">
+              </label>
+              <div class="registration-actions">
+                <button class="serial-button primary" type="submit">Save Registration</button>
+                <button class="serial-button" id="captureBaselineButton" type="button">Use Live as Baseline</button>
+                <button class="serial-button" id="clearRegistrationButton" type="button">Clear</button>
+              </div>
+            </form>
+          </article>
+
+          <article class="panel serial-panel" id="serial">
+            <div class="panel-title serial-title">
+              <h2>Real Serial Device Link</h2>
+              <span id="serialBadge">Web Serial</span>
+            </div>
+            <div class="serial-controls">
+              <label class="baud-select" for="baudRate">
+                <span>Baud rate</span>
+                <select id="baudRate">
+                  <option value="9600">9600</option>
+                  <option value="57600">57600</option>
+                  <option value="115200" selected>115200</option>
+                  <option value="230400">230400</option>
+                </select>
+              </label>
+              <button class="serial-button primary" id="serialConnectButton" type="button">Connect Serial</button>
+              <button class="serial-button" id="serialDisconnectButton" type="button" disabled>Disconnect</button>
+            </div>
+            <div class="serial-meta-grid">
+              <div>
+                <span>Port</span>
+                <strong id="serialPortLabel">No device</strong>
+              </div>
+              <div>
+                <span>Samples</span>
+                <strong id="serialSampleCount">0</strong>
+              </div>
+              <div>
+                <span>Last packet</span>
+                <strong id="serialLastPacket">Waiting</strong>
+              </div>
+              <div>
+                <span>Protocol</span>
+                <strong>JSONL / CSV</strong>
+              </div>
+            </div>
+            <div class="live-value-grid" id="liveValueGrid"></div>
+            <pre class="serial-log" id="serialLog">Connect an XIAO/Arduino-compatible board and stream one packet per line.</pre>
+          </article>
+        </section>
+
+        <section class="hidden-reference" id="cohort" aria-label="Cohort queue">
+          <button id="cohortButton" type="button">Open cohort queue</button>
+        </section>
+        <section class="hidden-reference" id="care" aria-label="Care plan">
+          <button id="reviewButton" type="button">Needs Review</button>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
